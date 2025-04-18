@@ -87,10 +87,10 @@ title('Gammatonegram - fast method')
 % Since it's the last argument, we have to include all the other
 % arguments.  These are the default values for: summation window 
 % (0.025 sec), hop between successive windows (0.010 sec), 
-% number of gammatone channels (64), lowest frequency (50 Hz), 
+% number of gammatone channels (64 to 106), lowest frequency (50 to 140 Hz), 
 % and highest frequency (sr/2).  The last argument as zero 
 % means not to use the FFT approach.
-tic; [D2,F2] = gammatonegram(d,sr,0.025,0.010,106,50,sr/2,0); toc        % TASK 2
+tic; [D2,F2] = gammatonegram(d,sr,0.025,0.010,106,140,sr/2,0); toc        % TASK 2
 %Elapsed time is 3.165083 seconds.
 subplot(211)                                                             % TASK 1 and TASK 3
 imagesc(20*log10(D2)); axis xy
@@ -118,13 +118,13 @@ title('Gammatonegram - accurate method')
 % Check the frequency responses to see that they match:
 % Put an impulse through the Slaney ERB filters, then take the 
 % frequency response of each impulse response.
-fcfs = flipud(MakeERBFilters(16000,106,50));                             % TASK 2
+fcfs = flipud(MakeERBFilters(16000,106,140));                             % TASK 2
 gtir = ERBFilterBank([1, zeros(1,1000)],fcfs);
 H = zeros(106,512);                                                      % TASK 2
 for i = 1:106; H(i,:) = abs(freqz(gtir(i,:),1,512)); end                 % TASK 2
 % The weighting matrix for the FFT is the frequency response 
 % of each output filter
-gtm = fft2gammatonemx(1024,16000,106,1,50,8000,512);                     % TASK 2
+gtm = fft2gammatonemx(1024,16000,106,1,140,8000,512);                     % TASK 2
 % Plot every 5th channel from both.  Offset by 3 dB just so we can
 % see both
 fs = [0:511]/512*8000;
